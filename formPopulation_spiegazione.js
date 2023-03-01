@@ -14,7 +14,7 @@ var selectFormElement = document.forms[index].elements[index]
 
 
 
-                                            //ESERCIZIO
+//ESERCIZIO
 
 /*
 Creare un programma che permetta di inserire una lista di persone (istanza della classe Person)
@@ -64,7 +64,7 @@ const persons = [
          //rimuve il contenuto prima diu aggiungere i nuovi elementi
         //meglio fuori dal metodo forEach() perché la esegue prima di entrare nel metodo
         ulParent.innerHTML = "";
-        
+
         argument.forEach((value) => {
             //crea nuovi elementi li e div
             let newLi = document.createElement("li");
@@ -81,7 +81,7 @@ const persons = [
             newLi.appendChild(newDivAge);
             //appende ad ogni ciclo il nuovo li contenente i div creati
             ulParent.appendChild(newLi);
-            
+
             })
         }
 } */
@@ -102,7 +102,7 @@ const persons = [
 
         //mappa gli argomenti passati
         const argumentMap = argument.map((parametri) => {
-            
+
             //genera una stringa contenente tutti gli elementi necessari (attributi compresi)
             let stringa = "";
             stringa += '<li class="list-group-item d-flex">';
@@ -117,7 +117,7 @@ const persons = [
     }
 }
 printPersonsList2(persons) */
-    
+
 
 //codice 3 (con template string si può evitare di mischiare JS con HTML nella generazione di string)
 function printPersonsList3(argument){
@@ -141,12 +141,12 @@ function printPersonsList3(argument){
         }
 
         /*a printPersonList3 viene passato come argomento l'array persons che viene mappato passando
-        la funzone createElemtLi quindi l'argomento parameter punta alle istanze di persons che 
+        la funzone createElemtLi quindi l'argomento parameter punta alle istanze di persons che
         a loro volta sono costruttori Person. parameter è istanza di Person*/
         ulParent.innerHTML = argument
-                                .sort((a,b) => a.age - b.age)
-                                .map(createElementLi)   //mappa la funzione
-                                .join("")
+            .sort((a,b) => a.age - b.age)
+            .map(createElementLi)   //mappa la funzione
+            .join("")
     }
 }
 printPersonsList3(persons);
@@ -181,7 +181,7 @@ esForm.addEventListener("submit", (event) => {selectPerson
     const form = event.target; //oggetto sul quale è stato triggerato l'evento
     form.reset();                //è un metodo dei form, permette di svuotare resettando
     //oppure
-    //esForm.reset();       
+    //esForm.reset();
 }) */
 
 
@@ -191,14 +191,14 @@ function selectPerson(argument){
 
 
     const newOptionElement = argument
-                            .filter(p => p instanceof Person)   //filtro di controllo
-                            .sort((a,b) => a.age - b.age)
-                            .map((parameter) => new Option(parameter.name + " " + parameter.age));
-                            //new Option crea un nuovo elemento html option
+        .filter(p => p instanceof Person)   //filtro di controllo
+        .sort((a,b) => a.age - b.age)
+        .map((parameter) => new Option(parameter.name + " " + parameter.age, parameter.name));
+    //new Option crea un nuovo elemento html option
 
 
     const form1 = document.forms.item(1);                         //document.forms.item(1).elements[0]
-    const firstElement = form1.elements[0];                             
+    const firstElement = form1.elements[0];
     const firstChild = [firstElement.children[0]];                //HTMLCollection like-Array Object
 
     const multyArray = firstChild.concat(newOptionElement);       //concatena più array
@@ -238,21 +238,29 @@ buttonForm1.addEventListener("submit", (evento) =>{
     const selectedPersonName = evento.target.elements[0].value;
     //const selectedPersonName = document.forms.item(1).elements[0].value
 
-    const selectedPerson = persons.list.find((item) => item.name === selectedPersonName)
+    // NO - DA DOVE VIENE list??? persons è un array..
+    // const selectedPerson = persons.list.find((item) => item.name === selectedPersonName)
+
+    // FAI COSI'
+    const selectedPerson = persons.find((item) => item.name === selectedPersonName)
+
     if(selectedPerson instanceof Person){
         selectedPerson.age++;
-        console.log(selectedPerson, selectedPerson instanceof Person)
         document.dispatchEvent(new Event("listUpdate", {
-                bubbles: true
-        }))
+            bubbles: true
+        }));
     }
 
 })
 
+document.addEventListener("listUpdate", ()=>{
+    printPersonsList3(persons);
+});
+
 /*
 Viene restituito Errore formPopulation_spiegazione.js:241 Uncaught TypeError: Cannot read properties of undefined (reading 'find')
     at HTMLFormElement.<anonymous> (formPopulation_spiegazione.js:241:41)
-    
+
 
     */
 
@@ -261,7 +269,7 @@ Viene restituito Errore formPopulation_spiegazione.js:241 Uncaught TypeError: Ca
 
 //TRIGGER SELETTORE
 const personCreareForm0 = document.forms.item(0);
-    personCreareForm0.addEventListener("submit", (evento) => {
+personCreareForm0.addEventListener("submit", (evento) => {
     evento.preventDefault();    //disattiva il comportamento di default
     evento.stopPropagation();   //disattiva il comportamento di default
     const form = evento.target;
@@ -315,7 +323,7 @@ function selectPerson(argument){
         })
         parentSelector.innerHTML = argument
                                         .sort((a,b) => a.age - b.age)
-                                        .map(createSelectPerson);                                                  
+                                        .map(createSelectPerson);
     }
 };
 selectPerson(persons) */
